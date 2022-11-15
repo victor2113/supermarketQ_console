@@ -10,20 +10,21 @@
 
 typedef struct Market_client {
     char name;
-    int ct;//customer time
-    int sum;//customer check
+    int ctime;//customer time
+    int check;//customer check
 } client;
-
-typedef struct  queue_element{
-    client client;
-    struct MyQueue *next;
-} q_element;
 
 
 typedef struct MyQueue {
-    q_element *data;  // указатель на данные
+    client *data;  // указатель на данные
     int low;        // указатель на нижнюю границу
     int high;       // указатель на верхнюю границу
     int count;      // количество элементов в очереди
     int max;
 } queue;
+
+queue *init (int size);
+
+void queue_add (queue *q, client qe);
+
+client generate_client(int max_customer_time, int max_check);

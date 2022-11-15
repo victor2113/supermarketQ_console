@@ -2,7 +2,7 @@
 #include "supermarket_q.h"
 
 
-
+int max_customer_time , max_customer_check;
 
 
 /*
@@ -24,7 +24,26 @@
 Допустимая очередь на кассу: 5
 
  */
+
+
+
 int main() {
-    printf("Hello, World!\n");
+
+    FILE *fin;
+
+    fin = fopen("settings.txt", "r");
+
+    fscanf(fin, "%d %d", &max_customer_time,&max_customer_check);
+
+    client client1 = {' ', 0 , 0};
+
+    client1 = generate_client(  max_customer_time , max_customer_check);
+
+    queue  *queue1;
+    queue1 = init(10);
+    queue_add(queue1 , client1);
+
+
+
     return 0;
 }
