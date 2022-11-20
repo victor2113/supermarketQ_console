@@ -1,6 +1,3 @@
-//
-// Created by 1 on 12.11.2022.
-//
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -79,7 +76,31 @@ void print_q(struct queue *q) {
         return;
     }
     for (h = q->frnt; h != NULL; h = h->ptr)
-        printf("%c ", h->client.name);
+        printf("%c%d\n", h->client.name, h->client.ctime);
+}
+
+void print_q_element(struct queue *q , int n) {
+    struct list *h;
+    if (is_empty(q) == 1) {
+        return;
+    }
+    h = q->frnt;
+    for (int i = 0; i <= n; i++){
+        h = h->ptr;
+        if(i == n)
+            printf("%c%d\n", h->client.name, h->client.ctime);
+    }
+
+}
+int  curent_queue_size(struct queue *q) {
+    int counter = 0;
+    struct list *h;
+    if (is_empty(q) == 1) {
+        return 0 ;
+    }
+    for (h = q->frnt; h != NULL; h = h->ptr)
+        counter++;
+    return counter;
 }
 
 
@@ -88,7 +109,40 @@ client generate_client(int max_customer_time, int max_check) {
     srand(time(NULL));
     client1.name = 'a' + rand() % 26;
     client1.check = rand() % max_check;
-    client1.ctime = rand() % max_customer_time;
-    printf("client.name = %c , client.check = %d ,   client.ctime = %d \n", client1.name, client1.check, client1.ctime);
+    client1.ctime = rand() % max_customer_time + 1;
+    //printf("client.name = %c , client.check = %d ,   client.ctime = %d \n", client1.name, client1.check, client1.ctime);
     return client1;
 }
+
+cashier create_new_cashier(int max_cashier_queue) {
+    queue *queue1;
+    queue1 = (queue *) malloc(sizeof(queue *));
+    cashier cashier = {0, 0, 0, queue1};
+    init_q(cashier.queue);
+    return cashier;
+}
+
+
+int is_cashier_full(cashier cashier , int max_cashier_queue){
+    if (curent_queue_size(cashier.queue) <  max_cashier_queue)
+        return 0;
+    else
+        return 1;
+}
+
+
+
+
+
+//void printInterface(int max_cashiers, int max_cashier_queue) {
+//    printf("Supermarket queue console sinulator\n");
+//    for (int i = 0; i < max_cashiers; ++i){
+//        printf("%d  ", i+1);//номера касс
+//        market[i] = create_new_cashier(max_cashier_queue);
+//    }
+//    printf("\n");
+//    for (int i = 0; i < max_cashiers; ++i)
+//        for (int j = 0; j < max_cashier_queue; ++j) {
+//
+//        }
+//}
