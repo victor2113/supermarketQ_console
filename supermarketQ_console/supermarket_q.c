@@ -79,16 +79,23 @@ void print_q(struct queue *q) {
         printf("%c%d\n", h->client.name, h->client.ctime);
 }
 
-void print_q_element(struct queue *q , int n) {
+void print_q_element_for_interface(struct queue *q , int n) { //-1 - print front 0 - 1-element ...pt
     struct list *h;
     if (is_empty(q) == 1) {
+        printf("|-|");
         return;
     }
     h = q->frnt;
+    if(n - 2 > curent_queue_size(q))
+        printf("| |");
+    if(n == -1){
+        printf("%c%d\n", h->client.name, h->client.ctime);
+        return;
+    }
     for (int i = 0; i <= n; i++){
         h = h->ptr;
         if(i == n)
-            printf("%c%d\n", h->client.name, h->client.ctime);
+            printf("%c%d ", h->client.name, h->client.ctime);
     }
 
 }
@@ -106,11 +113,9 @@ int  curent_queue_size(struct queue *q) {
 
 client generate_client(int max_customer_time, int max_check) {
     client client1 = {' ', 0, 0};
-    srand(time(NULL));
-    client1.name = 'a' + rand() % 26;
-    client1.check = rand() % max_check;
-    client1.ctime = rand() % max_customer_time + 1;
-    //printf("client.name = %c , client.check = %d ,   client.ctime = %d \n", client1.name, client1.check, client1.ctime);
+    client1.name = 'a' + GetRandomNumber(26);
+    client1.check = GetRandomNumber(max_check);
+    client1.ctime = GetRandomNumber(max_customer_time);
     return client1;
 }
 
@@ -130,7 +135,28 @@ int is_cashier_full(cashier cashier , int max_cashier_queue){
         return 1;
 }
 
+int GetRandomNumber(int max)
+{
+    int min = 0;
+    srand(time(NULL));
+    int num = min + rand() % (max - min + 1);
 
+    return num;
+}
+
+//client *generate_next_customers(int max_next_customers ,int max_customer_time, int max_check){
+//    srand(time(NULL));
+//    int next_custmrs = 5;
+//    //next_custmrs = rand()% max_next_customers;
+//    client *next_customers = (client *) malloc(max_next_customers * sizeof(client *));
+//    for (int i = 0; i < max_next_customers; ++i) {
+//        if(i < next_custmrs)
+//            next_customers[i] = generate_client( max_customer_time,  max_check);
+//        else
+//            next_customers[i] = incorrect_client;
+//    }
+//    return next_customers;
+//}
 
 
 

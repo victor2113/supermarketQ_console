@@ -29,6 +29,7 @@ typedef struct cashier {
     queue *queue;
 } cashier;
 
+int GetRandomNumber(int max);
 
 struct list *init(client client);
 
@@ -47,10 +48,10 @@ void insert(struct queue *q, client client);
 client remove_fr_q(queue *q);
 
 client test(struct queue *q);
-
+client *generate_next_customers(int max_next_customers, int max_customer_time, int max_check);
 void queue_add(queue *q, client qe);
 
-void print_q_element(struct queue *q, int n);
+void print_q_element_for_interface(struct queue *q, int n);
 
 cashier create_new_cashier(int max_cashier_queue);
 
@@ -59,3 +60,5 @@ int is_cashier_full(cashier cashier, int max_cashier_queue);
 client generate_client(int max_customer_time, int max_check);
 
 void printInterface(int max_cashiers, int max_cashier_queue);
+
+void print_next_customers(client *next_clients);

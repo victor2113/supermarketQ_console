@@ -5,6 +5,7 @@
 
 
 int max_customer_time, max_customer_check, max_cashiers, max_cashier_queue, max_next_customers;
+client Bob = {'$' , -1 , 0};
 
 
 /*
@@ -41,44 +42,46 @@ int main() {
            &max_cashiers,
            &max_cashier_queue,
            &max_next_customers); //settings
-    cashier cashier1 = create_new_cashier(max_cashier_queue);
-    for (int i = 0; i < max_cashier_queue; ++i) {
-        client client1 = generate_client(max_customer_time, max_customer_check);
-        insert(cashier1.queue , client1);
-        sleep(1);
-    }
-    print_q(cashier1.queue);
-    printf("\n\neto\n");
-    print_q_element(cashier1.queue , 2);
-    printf("\n\n\n");
-    client client2 = remove_fr_q(cashier1.queue);
-    print_q(cashier1.queue);
-    printf("\n\neto\n");
-    print_q_element(cashier1.queue , 2);
 
-//    int curent_profit = 0;
-//    cashier *market = (cashier *) malloc(max_cashiers * sizeof(cashier *));
-//    client *next_customers = (client *) malloc(max_next_customers * sizeof(client *));
-//
-//    for (int i = 0; i < max_cashiers; ++i) {
-//        market[i] = create_new_cashier(max_cashier_queue);
-//    }
-//    printf("Supermarket queue console sinulator\n");
-//    system("cls");
-//
-//    for (int qua = 0; qua < 10; ++qua) {
-//        system("clear");
-//        printf("Supermarket queue console sinulator\n");
-//        for (int i = 0; i < max_cashiers; ++i) {
-//            printf("%d  ", i + 1);//номера касс
+
+    int curent_profit = 0;
+
+    cashier *market = (cashier *) malloc(max_cashiers * sizeof(cashier *));
+    client *next_customers = (client *) malloc(max_next_customers * sizeof(client *));
+
+    for (int i = 0; i < max_cashiers; ++i) {
+        market[i] = create_new_cashier(max_cashier_queue);
+    }
+
+    for (int i = 0; i < max_next_customers; ++i) {
+        int curent_next_customers = GetRandomNumber(max_next_customers);
+        sleep(1);
+        if(i < curent_next_customers)
+            next_customers[i] = generate_client(max_customer_time, max_customer_check);
+        else
+            next_customers[i] = Bob;
+    }
+    for (int i = 0; next_customers[i].name != Bob.name; ++i) {
+        printf("%c%d ", next_customers[i].name,  next_customers[i].ctime);
+    }
+    for (int qua = 0; qua < 10; ++qua) {
+
+//        for (int i = 0; next_customers[i].name != Bob.name; ++i) {
+//            printf("%c%d ", next_customers[i].name,  next_customers[i].ctime);
 //        }
-//        for (int i = 0; i < max_cashiers; ++i) {
-//            for (int j = 0; j < max_cashier_queue; ++j) {
-//
+
+        printf("\nSupermarket queue console simulator\n");
+        for (int i = 0; i < max_cashiers; ++i) {
+            printf("%d  ", i + 1);//номера касс
+        }
+//        for (int i = -1; i < max_cashiers; ++i) {
+//            for (int j = -1; j < max_cashier_queue; ++j) {
+//                print_q_element_for_interface(market[i].queue,j);
 //            }
+//            printf("\n");
 //        }
-//
-//    }
+
+    }
 
     return 0;
 }
