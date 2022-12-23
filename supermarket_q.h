@@ -1,11 +1,11 @@
 //
-// Created by 1 on 17.11.2022.
+// Created by SuperAdmin on 21.12.2022.
 //
 
-#ifndef LABA2_2022_SUPERMARKET_Q_H
-#define LABA2_2022_SUPERMARKET_Q_H
+#ifndef UNTITLED_SUPERMARKET_Q_H
+#define UNTITLED_SUPERMARKET_Q_H
 
-#endif //LABA2_2022_SUPERMARKET_Q_H
+#endif //UNTITLED_SUPERMARKET_Q_H
 
 typedef struct Market_client {
     char name;
@@ -19,6 +19,7 @@ typedef struct list {
 } node;
 
 typedef struct queue {
+    int size;
     struct list *frnt, *rear;
 } queue;
 
@@ -51,7 +52,7 @@ client test(struct queue *q);
 client *generate_next_customers(int max_next_customers, int max_customer_time, int max_check);
 void queue_add(queue *q, client qe);
 
-void print_q_element_for_interface(struct queue *q, int n);
+void print_q_element_for_interface(struct queue *q , int element_number);
 
 cashier create_new_cashier(int max_cashier_queue);
 

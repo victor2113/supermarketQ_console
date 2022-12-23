@@ -1,12 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "supermarket_q.h"
-#include <unistd.h>
 #include <windows.h>
 
 
 int max_customer_time, max_customer_check, max_cashiers, max_cashier_queue, max_next_customers;
-client Bob = {'$' , -1 , 1020};
+client Bob = {'$', -1, 1020};
 
 
 /*
@@ -45,61 +44,103 @@ int main() {
            &max_next_customers); //settings
 
 
-    int curent_profit = 0;
+    int curent_profit = 0,
+            curent_next_customers = 0,
+            time_counter = 0,
+            working_cashiers = 0,
+            people_in_queues = 0,
+            served_clients = 0;
 
-    cashier *market = (cashier *) malloc(max_cashiers * sizeof(cashier *));
-    client *next_customers = (client *) malloc((max_next_customers + 1) * sizeof(client *));
 
-    for (int i = 0; i < max_cashiers; ++i) {
+    cashier *market = (cashier *) malloc(max_cashiers+1 * sizeof(cashier *));
+    client *next_customers = (client *) malloc((max_next_customers) * sizeof(client*));
+    next_customers[0] = generate_client(max_customer_time, max_customer_check);
+
+
+    for (int i = 1; i <= max_cashiers; ++i) {
         market[i] = create_new_cashier(max_cashier_queue);
         init_q(market[i].queue);
     }
 
 
-
     for (int qua = 0; qua < 4; ++qua) {
-
+        time_counter++;
         Sleep(1000);
-
-        int curent_next_customers = GetRandomNumber(max_next_customers);
-
-        printf("\nnext customers = ");
-        if(curent_next_customers == 0) {
-            printf("no next customers\n");
-        }
-        else{
-            for (int i = 0; i < max_next_customers; ++i) {
-                if(i < curent_next_customers){
-                    Sleep(1000);
-                    next_customers[i] = generate_client(max_customer_time, max_customer_check);
-                }
-                else
-                    next_customers[i] = Bob;
-            }
-
-            for (int i = 0; next_customers[i].name != Bob.name && i < max_next_customers; ++i) {
-                printf(" %c%d ", next_customers[i].name,  next_customers[i].ctime);
-            }
-        }
+        //system("cls");
 
 
-
-
+        curent_next_customers = GetRandomNumber(max_next_customers);
 
 
         printf("\nSupermarket queue console simulator\n");
 
-        for (int i = 0; i < max_cashiers; ++i) {
-            printf("%d  ", i + 1);//номера касс
-        }
 
+        for (int i = 1; i <= max_cashiers; ++i) {
+            printf("%d  ", i);//номера касс
+        }
         printf("\n");
-        for (int i = 0; i < max_cashier_queue; ++i) {
-            for (int j = 0; j < max_cashiers ; ++j) {
-                print_q_element_for_interface(market[j].queue,0);
+
+
+        for (int i = 1; i <= max_cashiers; ++i) {
+            printf("%d  ", market[i].client_counter);//кол - во обслуженных
+        }
+        printf("\n");
+
+
+        for (int i = 1; i <= max_cashiers; ++i) {
+            if (market[i].is_open == 0)
+                printf("-  ");
+            else
+                printf("+  ");
+        }
+        printf("\n");
+
+
+        for (int i = 1; i <= max_cashier_queue; ++i) {
+            for (int j = 1; j <= max_cashiers; ++j) {
+                print_q_element_for_interface(market[j].queue, i);
             }
             printf("\n");
         }
+
+
+        printf("Time:%d  ", time_counter);//время
+
+
+        //NEXT CUSTOMERS START
+        printf("\nNext customers = ");
+        if (curent_next_customers == 0) {
+            curent_next_customers++;
+        }
+        if (curent_next_customers == 0) {
+            printf("no next customers\n");
+        } else {
+            for (int i = 0; i < max_next_customers; ++i) {
+                if (i < curent_next_customers) {
+                    Sleep(1000);
+                    next_customers[i] = generate_client(max_customer_time, max_customer_check);
+                } else
+                    next_customers[i] = Bob;
+            }
+
+            for (int i = 0; next_customers[i].name != Bob.name && i < max_next_customers; ++i) {
+                printf(" %c%d ", next_customers[i].name, next_customers[i].ctime);
+            }
+            printf("\n");
+        }
+        //NEXT CUSTOMERS END
+
+
+
+        printf("People in queues:%d  \n", people_in_queues);
+        printf("Working cashiers: %d out of %d\n", working_cashiers, max_cashiers);
+        printf("Served clients: %d\n", served_clients);
+        printf("Sum of all purchases: %d\n", curent_profit);
+        printf("Max cashier queue: %d\n", max_cashier_queue);
+        printf("\n\n");
+
+
+
 
     }
 
